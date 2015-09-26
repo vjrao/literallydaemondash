@@ -131,6 +131,10 @@ public class GUI extends JFrame {
             		sq.stop();
             		disPlay = true;
             	}
+            	
+            	if (midiCur >= midiEnd)
+            		testPB.setValue((int) (midiCur/(midiEnd)*100));
+            	repaint();
             }
         });
         
@@ -171,8 +175,8 @@ public class GUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
             	sq.stop();
             	disPlay = true;
-            	repaint();
             	sq.setMicrosecondPosition(0);
+            	testPB.setValue((int) (midiCur/(midiEnd)*100));
             }
         });
         
@@ -399,6 +403,9 @@ public class GUI extends JFrame {
         	//System.out.println(midiCur/midiEnd);
         	testPB.setValue((int) (midiCur/(midiEnd)*100));
         }
+        disPlay = true;
+        sq.setMicrosecondPosition(0);
         
+        gtw.repaint();
     }
 }
