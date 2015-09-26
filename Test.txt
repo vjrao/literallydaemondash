@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-Testing
-=======
-Testing 123456
-
->>>>>>> origin/master
