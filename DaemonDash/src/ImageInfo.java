@@ -1,42 +1,39 @@
-import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class ImageInfo {
-	
-	
-	
-	public void getImgChunks(File imgFile) throws IOException{
-		FileInputStream mFileInputStream = new FileInputStream(imgFile);
-		BufferedImage buffImg = ImageIO.read(mFileInputStream);
-		
-		int rows = 4;  
-        int cols = 4;  
-        int chunks = rows * cols; 
-		
-		int chunkHeight = buffImg.getHeight();
-		int chunkWidth = buffImg.getWidth();
-		int count = 0;
-		
-		BufferedImage imgChunks[] = new BufferedImage[chunks];
-		
-		for (int x = 0; x < rows; x++) {  
-            for (int y = 0; y < cols; y++) {  
-                //Initialize the image array with image chunks  
-                imgChunks[count] = new BufferedImage(chunkWidth, chunkHeight, buffImg.getType()); 
-                
-                Graphics2D gr = imgChunks[count++].createGraphics();  
-                gr.drawImage(buffImg, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);  
-                gr.dispose(); 
-            }
-		}
-		
-	}
-		
 
+	static final int ROWS = 4;
+	static int COLS = 4;
+	static int CHUNKS = ROWS * COLS;
+
+	final int CHUNK_HEIGHT;
+	final int CHUNK_WIDTH;
+	final int CHUNK_SIZE;
+	
+	float[][] hsb;
+
+	public ImageInfo(BufferedImage buffImg) {
+		CHUNK_HEIGHT = buffImg.getHeight() / COLS;
+		CHUNK_WIDTH = buffImg.getWidth() / ROWS;
+		CHUNK_SIZE = CHUNK_HEIGHT * CHUNK_WIDTH;
+		hsb = new float[CHUNKS][3];
+		getHSB(buffImg);
+	}
+
+	private void getHSB(BufferedImage img) {
+		for (int chunk = 0; chunk < CHUNKS; chunk++) {
+			long rgbs = 0;
+			for (int i = 0; i < CHUNK_WIDTH; i++) {
+				for (int j = 0; j < CHUNK_HEIGHT; j++) {
+					rgbs += img.getRGB(i + chunk % COLS, j + chunk / ROWS);
+				}
+			}
+
+			rgbs /= CHUNK_SIZE;
+			Color.RGBtoHSB((int) rgbs & 0xFF0000, (int) rgbs & 0x00FF00, (int) rgbs & 0x0000FF, hsb[chunk]);
+		}
+
+	}
 
 }
