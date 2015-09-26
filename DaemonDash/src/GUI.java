@@ -1,7 +1,11 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -9,7 +13,14 @@ import javax.swing.border.LineBorder;
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
 public class GUI extends JFrame {
-    public GUI() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static BufferedImage play = null;
+	private static BufferedImage stop = null;
+	
+	public GUI() {
         super("DaemonDash Demo");
 
         setBackground(new Color(0,0,0,0));
@@ -19,7 +30,12 @@ public class GUI extends JFrame {
         setResizable(false);
 
         JPanel panel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 if (g instanceof Graphics2D) {
                     final int R = 50;
@@ -39,7 +55,20 @@ public class GUI extends JFrame {
         setLayout(null);
         Border mouseOverBorder = new LineBorder(new Color(200,200,200),4);
         
-        JPanel button1 = new JPanel();
+        
+		try {
+			play = ImageIO.read(new File("playImg.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        JPanel button1 = new JPanel(){
+        	public void paintComponent(Graphics g) {
+        		super.paintComponent(g);
+        		g.drawImage(play, 0, 0, null);
+        	}
+        };
         button1.setSize(120, 120);
         button1.setBorder(null);
         button1.setBackground(new Color(160,160,160));
@@ -72,7 +101,20 @@ public class GUI extends JFrame {
             }
         });
         
-        JPanel button2 = new JPanel();
+        try {
+			stop = ImageIO.read(new File("stopImg.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        JPanel button2 = new JPanel(){
+        	public void paintComponent(Graphics g) {
+        		super.paintComponent(g);
+        		g.drawImage(stop, 0, 0, null);
+        	}
+        };
+        
         button2.setSize(120, 120);
         button2.setBorder(null);
         button2.setBackground(new Color(160,160,160));
@@ -239,7 +281,7 @@ public class GUI extends JFrame {
         
         JProgressBar testPB = new JProgressBar();
         testPB.setBackground(Color.black);
-        testPB.setForeground(new Color(160,160,160));
+        testPB.setForeground(new Color(39,117,236));
         testPB.setBorder(null);
         testPB.setBorderPainted(false);
         testPB.setSize(260, 40);
