@@ -395,17 +395,20 @@ public class GUI extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        midiCur = sq.getMicrosecondPosition();
-        midiEnd = sq.getMicrosecondLength();
-        while (midiCur < midiEnd)
+        while(true)
         {
-        	midiCur = sq.getMicrosecondPosition();
-        	//System.out.println(midiCur/midiEnd);
-        	testPB.setValue((int) (midiCur/(midiEnd)*100));
+            midiCur = sq.getMicrosecondPosition();
+            midiEnd = sq.getMicrosecondLength();
+        	while (midiCur < midiEnd)
+        	{
+        		midiCur = sq.getMicrosecondPosition();
+        		//System.out.println(midiCur/midiEnd);
+        		testPB.setValue((int) (midiCur/(midiEnd)*100));
+        	}
+        	disPlay = true;
+        	sq.setMicrosecondPosition(0);
+        	testPB.setValue(0);
+        	gtw.repaint();
         }
-        disPlay = true;
-        sq.setMicrosecondPosition(0);
-        
-        gtw.repaint();
     }
 }
