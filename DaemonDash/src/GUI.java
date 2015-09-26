@@ -2,13 +2,21 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
 
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
@@ -19,6 +27,12 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static BufferedImage play = null;
 	private static BufferedImage stop = null;
+	private static double midiStart = 0;
+	private static double midiEnd = 0;
+	private static double midiCur = 0;
+	private static JProgressBar testPB = new JProgressBar();
+	private static GUI gtw = null;
+	public static Sequencer sq = null;
 	
 	public GUI() {
         super("DaemonDash Demo");
@@ -97,7 +111,7 @@ public class GUI extends JFrame {
             
             @Override
             public void mouseClicked(MouseEvent e) {
-            	//button1.setBackground(new Color(120,120,120));
+            	sq.start();
             }
         });
         
@@ -143,7 +157,7 @@ public class GUI extends JFrame {
             
             @Override
             public void mouseClicked(MouseEvent e) {
-            	//button2.setBackground(new Color(120,120,120));
+            	sq.stop();
             }
         });
         
@@ -279,7 +293,6 @@ public class GUI extends JFrame {
             }
         });
         
-        JProgressBar testPB = new JProgressBar();
         testPB.setBackground(Color.black);
         testPB.setForeground(new Color(39,117,236));
         testPB.setBorder(null);
@@ -327,12 +340,50 @@ public class GUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GUI gtw = new
+                gtw = new
                     GUI();
 
                 // Display the window.
                 gtw.setVisible(true);
             }
         });
+		try {
+			sq = MidiSystem.getSequencer();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			sq.open();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        InputStream is = null;
+        try {
+			is = new BufferedInputStream(
+					new FileInputStream(new File("ChromaticScale.mid")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			sq.setSequence(is);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidMidiDataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        midiCur = sq.getMicrosecondPosition();
+        midiEnd = sq.getMicrosecondLength();
+        while (midiCur < midiEnd)
+        {
+        	midiCur = sq.getMicrosecondPosition();
+        	//System.out.println(midiCur/midiEnd);
+        	testPB.setValue((int) (midiCur/(midiEnd)*100));
+        }
+        
     }
 }
