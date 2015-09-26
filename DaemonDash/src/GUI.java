@@ -13,7 +13,7 @@ public class GUI extends JFrame {
         super("DaemonDash Demo");
 
         setBackground(new Color(0,0,0,0));
-        setSize(new Dimension(800,500));
+        setSize(new Dimension(900,700));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -39,37 +39,37 @@ public class GUI extends JFrame {
         setLayout(null);
         Border mouseOverBorder = new LineBorder(new Color(200,200,200),4);
         
-        JPanel testPanel = new JPanel();
-        testPanel.setSize(100, 100);
-        testPanel.setBorder(null);
-        testPanel.setBackground(new Color(160,160,160));
-        testPanel.setLocation(this.getWidth()/2-testPanel.getWidth()/2, 
-        		this.getHeight()/2-testPanel.getHeight()/2);  
-        testPanel.addMouseListener(new MouseListener() {
+        JPanel button1 = new JPanel();
+        button1.setSize(100, 100);
+        button1.setBorder(null);
+        button1.setBackground(new Color(160,160,160));
+        button1.setLocation(this.getWidth()/2-button1.getWidth()/2, 
+        		this.getHeight()/2-button1.getHeight()/2-50);  
+        button1.addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                testPanel.setBackground(new Color(160,160,160));
+                button1.setBackground(new Color(160,160,160));
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 // Not working :(
-                testPanel.setBackground(new Color(200,200,200));
+                button1.setBackground(new Color(200,200,200));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                testPanel.setBorder(null);
+                button1.setBorder(null);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                testPanel.setBorder(mouseOverBorder);
+                button1.setBorder(mouseOverBorder);
             }
             
             @Override
             public void mouseClicked(MouseEvent e) {
-            	//testPanel.setBackground(new Color(120,120,120));
+            	//button1.setBackground(new Color(120,120,120));
             }
         });
         
@@ -84,9 +84,14 @@ public class GUI extends JFrame {
         
         JPanel audioPanel = new JPanel();
         audioPanel.setBorder(null);
+        audioPanel.setBackground(new Color(160, 160, 160));
+        audioPanel.setSize(870, 150);
+        audioPanel.setLocation(10, this.getHeight()-200);
+        
         
         add(testPB);
-        add(testPanel);
+        add(button1);
+        add(audioPanel);
         
     }
 
