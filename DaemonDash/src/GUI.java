@@ -27,12 +27,13 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static BufferedImage play = null;
 	private static BufferedImage stop = null;
-	private static double midiStart = 0;
+	private static BufferedImage pause = null;
 	private static double midiEnd = 0;
 	private static double midiCur = 0;
 	private static JProgressBar testPB = new JProgressBar();
 	private static GUI gtw = null;
-	public static Sequencer sq = null;
+	private static Sequencer sq = null;
+    private static boolean disPlay = true;
 	
 	public GUI() {
         super("DaemonDash Demo");
@@ -69,18 +70,30 @@ public class GUI extends JFrame {
         setLayout(null);
         Border mouseOverBorder = new LineBorder(new Color(200,200,200),4);
         
-        
 		try {
 			play = ImageIO.read(new File("playImg.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		} try {
+			pause = ImageIO.read(new File("pauseImg.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} try {
+			stop = ImageIO.read(new File("stopImg.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
         
         JPanel button1 = new JPanel(){
         	public void paintComponent(Graphics g) {
         		super.paintComponent(g);
-        		g.drawImage(play, 0, 0, null);
+        		if (disPlay)
+        			g.drawImage(play, 0, 0, null);
+        		else
+        			g.drawImage(pause, 0, 0, null);
         	}
         };
         button1.setSize(120, 120);
@@ -111,16 +124,15 @@ public class GUI extends JFrame {
             
             @Override
             public void mouseClicked(MouseEvent e) {
-            	sq.start();
+            	if (disPlay) {
+            		sq.start();
+            		disPlay = false;
+            	} else {
+            		sq.stop();
+            		disPlay = true;
+            	}
             }
         });
-        
-        try {
-			stop = ImageIO.read(new File("stopImg.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         
         JPanel button2 = new JPanel(){
         	public void paintComponent(Graphics g) {
@@ -158,6 +170,9 @@ public class GUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
             	sq.stop();
+            	disPlay = true;
+            	repaint();
+            	sq.setMicrosecondPosition(0);
             }
         });
         
@@ -190,7 +205,7 @@ public class GUI extends JFrame {
             
             @Override
             public void mouseClicked(MouseEvent e) {
-            	//button3.setBackground(new Color(120,120,120));
+            	
             }
         });
         
