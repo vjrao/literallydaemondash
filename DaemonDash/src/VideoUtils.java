@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 
 import marvin.image.MarvinImage;
 import marvin.video.MarvinJavaCVAdapter;
@@ -28,18 +29,22 @@ public class VideoUtils implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		ArrayList<ImageInfo> vidFrameInfoFiles = new ArrayList<ImageInfo>();
 		try {
+			int c = 0;
 			while (true) {
-				// Request a video frame
-				videoFrame = videoAdapter.getFrame();
+				c++;
+				if (c % 30 == 0) {
+					// Request a video frame
+					videoFrame = videoAdapter.getFrame();
+					ImageInfo imgInfo = new ImageInfo(videoFrame.getBufferedImage());
+					vidFrameInfoFiles.add(imgInfo);
+				}
+				System.out.println(vidFrameInfoFiles);
 			}
 		} catch (MarvinVideoInterfaceException e) {
 			e.printStackTrace();
 		}
 	}
-	
-//	public static void main(String[] args) {
-//        VideoUtils m = new VideoUtils(null);
-//    }
 
 }
