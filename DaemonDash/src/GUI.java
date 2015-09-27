@@ -17,8 +17,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioSystem;
-
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
 public class GUI extends JFrame {
