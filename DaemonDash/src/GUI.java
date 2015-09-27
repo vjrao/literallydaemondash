@@ -17,6 +17,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
+import javax.sound.sampled.AudioSystem;
 
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
@@ -36,7 +37,7 @@ public class GUI extends JFrame {
     private static boolean disPlay = true;
 	
 	public GUI() {
-        super("DaemonDash Demo");
+        super("Synestesia");
 
         setBackground(new Color(0,0,0,0));
         setSize(new Dimension(900,700));
@@ -402,13 +403,14 @@ public class GUI extends JFrame {
         	while (midiCur < midiEnd)
         	{
         		midiCur = sq.getMicrosecondPosition();
-        		//System.out.println(midiCur/midiEnd);
+        		//System.out.println(midiCur/midiEnd);  ==> debug purposes
         		testPB.setValue((int) (midiCur/(midiEnd)*100));
         	}
         	disPlay = true;
         	sq.setMicrosecondPosition(0);
         	testPB.setValue(0);
         	gtw.repaint();
+        	
         }
     }
 }
