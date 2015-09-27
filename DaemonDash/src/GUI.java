@@ -35,10 +35,10 @@ public class GUI extends JFrame {
     private static boolean disPlay = true;
 	
 	public GUI() {
-        super("Synestesia");
+        super("Synesthesia");
 
         setBackground(new Color(0,0,0,0));
-        setSize(new Dimension(900,700));
+        setSize(new Dimension(900,550));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -319,13 +319,7 @@ public class GUI extends JFrame {
         testPB.setLocation(580, 440);
         testPB.setValue(50);
         
-        JPanel audioPanel = new JPanel();
-        audioPanel.setBorder(null);
-        audioPanel.setBackground(new Color(160, 160, 160));
-        audioPanel.setSize(870, 150);
-        audioPanel.setLocation(10, this.getHeight()-200);
-        
-        
+      
         add(testPB);
         add(button1);
         add(button2);
@@ -333,7 +327,6 @@ public class GUI extends JFrame {
         add(button4);
         add(button5);
         add(button6);
-        add(audioPanel);
         
     }
 

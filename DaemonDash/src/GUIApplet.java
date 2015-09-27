@@ -30,77 +30,16 @@ public class GUIApplet extends JApplet {
 	private static double midiEnd = 0;
 	private static double midiCur = 0;
 	private static JProgressBar testPB = new JProgressBar();
+	private static GUI gtw = null;
 	private static Sequencer sq = null;
     private static boolean disPlay = true;
 	
 	public GUIApplet() {
-		System.getProperty("user.dir");
-		GraphicsEnvironment ge = 
-	            GraphicsEnvironment.getLocalGraphicsEnvironment();
-	        GraphicsDevice gd = ge.getDefaultScreenDevice();
-	        boolean isPerPixelTranslucencySupported = 
-	            gd.isWindowTranslucencySupported(PERPIXEL_TRANSLUCENT);
-
-	        //If translucent windows aren't supported, exit.
-	        if (!isPerPixelTranslucencySupported) {
-	            System.out.println(
-	                "Per-pixel translucency is not supported");
-	                System.exit(0);
-	        }
-		
-		try {
-			sq = MidiSystem.getSequencer();
-		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        try {
-			sq.open();
-		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        InputStream is = null;
-        try {
-			is = new BufferedInputStream(
-					new FileInputStream(new File("ChromaticScale.mid")));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        try {
-			sq.setSequence(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidMidiDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
 		init();
-		start();
 	}
 	
 	public void init() {
 
-	        JFrame.setDefaultLookAndFeelDecorated(true);
-
-	        // Create the GUI on the event-dispatching thread
-	        /*
-	        SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	                gtw = new
-	                    GUI();
-
-	                // Display the window.
-	                gtw.setVisible(true);
-	            }
-	        });
-	        */
-			
-	        
         setBackground(new Color(0,0,0,0));
         setSize(new Dimension(900,700));
 
@@ -397,8 +336,64 @@ public class GUIApplet extends JApplet {
         add(audioPanel);
         
     }
-	
-	public void start() {
+
+    public static void main(String[] args) {
+        // Determine what the GraphicsDevice can support.
+        GraphicsEnvironment ge = 
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        boolean isPerPixelTranslucencySupported = 
+            gd.isWindowTranslucencySupported(PERPIXEL_TRANSLUCENT);
+
+        //If translucent windows aren't supported, exit.
+        if (!isPerPixelTranslucencySupported) {
+            System.out.println(
+                "Per-pixel translucency is not supported");
+                System.exit(0);
+        }
+
+        JFrame.setDefaultLookAndFeelDecorated(true);
+
+        // Create the GUI on the event-dispatching thread
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                gtw = new
+                    GUI();
+
+                // Display the window.
+                gtw.setVisible(true);
+            }
+        });
+		try {
+			sq = MidiSystem.getSequencer();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			sq.open();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        InputStream is = null;
+        try {
+			is = new BufferedInputStream(
+					new FileInputStream(new File("ChromaticScale.mid")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			sq.setSequence(is);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidMidiDataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         while(true)
         {
             midiCur = sq.getMicrosecondPosition();
@@ -412,12 +407,8 @@ public class GUIApplet extends JApplet {
         	disPlay = true;
         	sq.setMicrosecondPosition(0);
         	testPB.setValue(0);
+        	gtw.repaint();
+        	
         }
-	}
-
-    public static void main(String[] args) {
-        // Determine what the GraphicsDevice can support.
-        
-        
     }
 }
